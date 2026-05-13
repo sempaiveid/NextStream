@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
-import { cn } from "@/shared/lib/utils";
+import { QueryProvider, cn } from "@/shared/lib";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -22,7 +22,9 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("font-sans", inter.variable)}
     >
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }

@@ -1,23 +1,23 @@
-import { notFound } from 'next/navigation'
+import { notFound } from "next/navigation";
 
-import { isValidLocale } from '@/shared/config'
+import { isValidLocale } from "@/shared/config";
 
 type LocaleLayoutProps = {
-  children: React.ReactNode
+  children: React.ReactNode;
   params: Promise<{
-    locale: string
-  }>
-}
+    locale: string;
+  }>;
+};
 
 export default async function LocaleLayout({
   children,
   params,
 }: LocaleLayoutProps) {
-  const { locale } = await params
+  const { locale } = await params;
 
   if (!isValidLocale(locale)) {
-    notFound()
+    notFound();
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }
