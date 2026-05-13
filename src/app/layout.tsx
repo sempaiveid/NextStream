@@ -1,38 +1,28 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import type { Metadata } from "next";
+import "./globals.css";
+import { Inter } from "next/font/google";
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-})
+import { cn } from "@/shared/lib/utils";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: 'NextStream',
-  description: 'Your personal streaming catalog',
-}
+  title: "NextStream",
+  description: "Your personal streaming catalog",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="uk" className="dark">
-      <body className={`${inter.variable} font-sans antialiased`}>
-        <Header />
-        <main>{children}</main>
-      </body>
+    <html
+      lang="uk"
+      suppressHydrationWarning
+      className={cn("font-sans", inter.variable)}
+    >
+      <body className="font-sans antialiased">{children}</body>
     </html>
-  )
-}
-
-function Header() {
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center px-12 bg-bg-base border-b border-border-subtle">
-      <span className="text-2xl font-black text-brand tracking-tight">
-        NEXTSTREAM
-      </span>
-    </header>
-  )
+  );
 }
