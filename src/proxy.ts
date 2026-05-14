@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import NextAuth from "next-auth";
 
 import { locales, defaultLocale } from "@/shared/config";
-import { auth } from "@/shared/lib/auth";
+import authConfig from "@/shared/lib/auth/auth.config";
+
+const { auth } = NextAuth(authConfig);
 
 const authRoutes = ["/login", "/register"];
 const publicRoutes = ["/"];
