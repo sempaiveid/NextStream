@@ -1,4 +1,4 @@
-import bcrypto from "bcryptjs";
+import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
 import { registerSchema } from "@/features/auth-by-email/model/registerSchema";
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     const { email, password } = parsed.data;
 
     const existingUser = await prisma.user.findUnique({
-      where: { email, password },
+      where: { email },
     });
 
     if (existingUser) {
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const hashedPassword = await bcrypto.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await prisma.user.create({
       data: {

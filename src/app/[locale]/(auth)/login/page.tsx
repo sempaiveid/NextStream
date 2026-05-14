@@ -1,9 +1,14 @@
-import { LoginForm } from "@/features/auth-by-email/ui";
+import { Metadata } from "next";
 
-export default function SingInPage() {
-  return (
-    <div className=" min-h-screen flex items-center justify-center">
-      <LoginForm />
-    </div>
-  );
+import { LoginPage } from "@/views/login/ui/login-page";
+
+
+
+export const metadata: Metadata = {
+  title: "Sign In | NextStream",
+  description: "Sign in to your NextStream account",
+};
+
+export default function LoginRoute() {
+  return <LoginPage />;
 }
