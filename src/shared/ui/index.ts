@@ -9,5 +9,7 @@ export {
   DialogFooter,
   DialogTrigger,
 } from "./dialog";
-export { Field, FieldLabel, FieldError, FieldGroup } from "./field";
+export { Field, FieldLabel, FieldError, FieldGroup, FieldSeparator } from "./field";
 export { FormInput } from "./form-input";
+export { Separator } from "./separator";
+export { Spinner } from "./spinner";

@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { locales, defaultLocale } from "@/shared/config";
+import { auth } from "@/shared/lib/auth";
 
-export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+const authRoutes = ["/login", "/register"];
+const publicRoutes = ["/"];
+
+export default auth((req: NextRequest & { auth: unknown }) => {
+  const { pathname } = req.nextUrl;
+  const session = req.auth;
+  const isLoggedIn = !!session;
 
   const pathnameLocale = locales.find(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
@@ -11,19 +17,31 @@ export function proxy(request: NextRequest) {
 
   if (!pathnameLocale) {
     return NextResponse.redirect(
-      new URL(`/${defaultLocale}${pathname}`, request.url),
+      new URL(`/${defaultLocale}${pathname}`, req.url),
     );
   }
 
-  // 2. AUTH (добавим когда настроим Auth.js)
-  // const session = await getSession()
-  // if (!session && pathname.includes('/my-list')) {
-  //   redirect to sign-in
-  // }
+  const pathnameWithoutLocale = pathname.replace(/^\/[a-z]{2}/, "");
+
+  const isAuthRoute = authRoutes.some((route) =>
+    pathnameWithoutLocale.startsWith(route),
+  );
+
+  const isPublicRoute = publicRoutes.some((route) =>
+    pathnameWithoutLocale.startsWith(route),
+  );
+
+  if (isLoggedIn && isAuthRoute) {
+    return NextResponse.redirect(new URL(`/${pathnameLocale}`, req.url));
+  }
+
+  if (!isLoggedIn && !isAuthRoute && !isPublicRoute) {
+    return NextResponse.redirect(new URL(`/${pathnameLocale}/login`, req.url));
+  }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)" ],
 };
