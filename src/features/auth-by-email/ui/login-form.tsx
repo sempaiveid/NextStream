@@ -14,14 +14,14 @@ import { GoogleButton } from "./google-button";
 import { Button, FieldGroup, FormInput, Spinner } from "@/shared/ui";
 
 export function LoginForm() {
-    const [isOAuthPending, setIsOAuthPending] = useState(false);
-  
+  const [isOAuthPending, setIsOAuthPending] = useState(false);
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
-    mode: "onChange",
+    mode: "onTouched",
   });
-  const { onLogin, isPending, error } = useLogin();
+  const { onLogin, isPending,  } = useLogin(form);
 
   function handleLogin(data: LoginFormValues) {
     onLogin(data);
@@ -52,7 +52,14 @@ export function LoginForm() {
           />
         </FieldGroup>
 
-        {error && <p className="text-red-500 text-sm">{error.message}</p>}
+        <div className="flex justify-end">
+          <Link
+            href="/forgot-password"
+            className="text-sm text-gray-400 hover:text-white"
+          >
+            Forgot password?
+          </Link>
+        </div>
 
         <Button
           type="submit"
@@ -71,7 +78,10 @@ export function LoginForm() {
         <div className="h-px flex-1 bg-white/10" />
       </div>
 
-      <GoogleButton disabled={isOAuthPending} onPendingChange={setIsOAuthPending}/>
+      <GoogleButton
+        disabled={isOAuthPending}
+        onPendingChange={setIsOAuthPending}
+      />
 
       <p className="mt-6 text-center text-sm text-gray-400">
         Don&apos;t have an account?{" "}

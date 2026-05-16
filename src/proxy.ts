@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import NextAuth from "next-auth";
+import NextAuth, { type Session } from "next-auth";
 
 import { locales, defaultLocale } from "@/shared/config";
 import authConfig from "@/shared/lib/auth/auth.config";
 
 const { auth } = NextAuth(authConfig);
 
-const authRoutes = ["/login", "/register"];
+const authRoutes = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/reset-password",
+];
 const publicRoutes = ["/"];
 
-export default auth((req: NextRequest & { auth: unknown }) => {
+export default auth((req: NextRequest & { auth: Session | null }) => {
   const { pathname } = req.nextUrl;
   const session = req.auth;
   const isLoggedIn = !!session;
@@ -19,9 +24,9 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   );
 
   if (!pathnameLocale) {
-    return NextResponse.redirect(
-      new URL(`/${defaultLocale}${pathname}`, req.url),
-    );
+    const redirectUrl = new URL(`/${defaultLocale}${pathname}`, req.url);
+    redirectUrl.search = req.nextUrl.search;
+    return NextResponse.redirect(redirectUrl);
   }
 
   const pathnameWithoutLocale = pathname.replace(/^\/[a-z]{2}/, "");
@@ -46,5 +51,5 @@ export default auth((req: NextRequest & { auth: unknown }) => {
 });
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)" ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
 };

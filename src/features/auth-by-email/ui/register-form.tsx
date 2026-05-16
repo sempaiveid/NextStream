@@ -22,10 +22,10 @@ export function RegisterForm() {
       password: "",
       confirmPassword: "",
     },
-    mode: "onChange",
+    mode: "onTouched",
   });
 
-  const { onRegister, isPending, error } = useRegistration();
+  const { onRegister, isPending } = useRegistration(form);
 
   const onSubmit = (values: RegisterFormValues) => {
     onRegister({
@@ -69,7 +69,6 @@ export function RegisterForm() {
           />
         </FieldGroup>
 
-        {error && <p className="text-red-500 text-sm">{error.message}</p>}
 
         <Button
           type="submit"

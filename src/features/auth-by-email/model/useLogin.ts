@@ -2,11 +2,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { UseFormReturn } from "react-hook-form";
 
 import type { LoginFormValues } from "./types";
 
-export function useLogin() {
-    const router = useRouter()
+export function useLogin(form: UseFormReturn<LoginFormValues>) {
+  const router = useRouter();
   const {
     mutate: onLogin,
     isPending,
@@ -26,11 +27,11 @@ export function useLogin() {
     },
     onSuccess: () => {
       router.push("/");
-      router.refresh(); 
+      router.refresh();
     },
     onError: (error: Error) => {
-      console.error("Login error:", error.message);
+      form.setError("password", { message: error.message });
     },
   });
-  return { onLogin, isPending, error,isSuccess };
+  return { onLogin, isPending, error, isSuccess };
 }
