@@ -10,6 +10,7 @@ export default {
     }),
     Credentials({ authorize: async () => null }),
   ],
+  session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
     error: "/auth/error",

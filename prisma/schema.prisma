@@ -42,11 +42,12 @@ model Account {
   @@map("accounts")
 }
 
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  email     String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 
-  @@unique([identifier, token])
-  @@map("verification_tokens")
+  @@map("password_reset_tokens")
 }
