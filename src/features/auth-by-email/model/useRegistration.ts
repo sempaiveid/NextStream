@@ -1,33 +1,28 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
-import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { UseFormReturn } from "react-hook-form";
 
-import { registerUser } from "../api/register";
+import { registerAction } from "../actions/register";
 
 import type { RegisterFormValues } from "./types";
 
-export function useRegistration(form :UseFormReturn<RegisterFormValues>) {
-  const {
-    mutate: onRegister,
-    isPending,
-    error,
-  } = useMutation({
-    mutationFn: (data: RegisterFormValues) => registerUser(data),
-    onSuccess: async (_, variables) => {
-      await signIn("credentials", {
-        email: variables.email,
-        password: variables.password,
-        callbackUrl: "/",
-      });
+export function useRegistration(form: UseFormReturn<RegisterFormValues>) {
+  const router = useRouter();
+
+  const { mutate: onRegister, isPending } = useMutation({
+    mutationFn: (data: RegisterFormValues) => registerAction(data),
+    onSuccess: (result) => {
+      if (result.error) {
+        form.setError("root", { message: result.error });
+        return;
+      }
+      router.push(`/verify-email?email=${encodeURIComponent(result.email!)}`);
     },
-    onError: (error: Error) => {
-      form.setError("confirmPassword",{message:error.message})
+    onError: () => {
+      form.setError("root", { message: "Something went wrong. Please try again." });
     },
   });
-  return {
-    onRegister,
-    isPending,
-    error,
-  };
+
+  return { onRegister, isPending };
 }

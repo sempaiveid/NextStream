@@ -1,5 +1,6 @@
 export { MovieCard } from "./ui/movie-card";
 export { MovieDetailsPage } from "./ui/movie-details";
+export { MovieDetailsSkeleton } from "./ui/movie-details-skeleton";
 export { MoviePlayer } from "./ui/movie-player";
 export { MovieRow } from "./ui/movie-row";
 export { HeroSection } from "./ui/hero-section";

@@ -1,5 +1,6 @@
 "use client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 
 import type { Movie } from "../model/types";
@@ -14,6 +15,8 @@ interface MovieRowProps {
 
 export function MovieRow({ title, movies }: MovieRowProps) {
   const rowRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const locale = pathname.split("/")[1] || "uk";
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
@@ -54,7 +57,7 @@ export function MovieRow({ title, movies }: MovieRowProps) {
           className="flex gap-3 overflow-x-auto scrollbar-hide px-8 pb-4"
         >
           {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} movie={movie} locale={locale} />
           ))}
         </div>
 

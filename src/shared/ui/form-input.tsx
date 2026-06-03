@@ -11,6 +11,7 @@ interface FormInputProps<T extends FieldValues> {
   label: string;
   placeholder?: string;
   type?: string;
+  maxLength?: number;
 }
 
 export function FormInput<T extends FieldValues>({
@@ -19,6 +20,7 @@ export function FormInput<T extends FieldValues>({
   label,
   placeholder,
   type = "text",
+  maxLength,
 }: FormInputProps<T>) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
@@ -36,6 +38,7 @@ export function FormInput<T extends FieldValues>({
               id={name}
               type={isPassword ? (showPassword ? "text" : "password") : type}
               placeholder={placeholder}
+              maxLength={maxLength}
               aria-invalid={fieldState.invalid}
               className={isPassword ? "pr-9" : undefined}
             />

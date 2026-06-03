@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { label: "Home", href: "/" },
+  { label: "Home", href: "" },
   { label: "TV Shows", href: "/tv-shows" },
   { label: "Movies", href: "/movies" },
   { label: "My List", href: "/my-list" },
@@ -12,17 +12,17 @@ const links = [
 
 export function NavLinks() {
   const pathname = usePathname();
-
-  const pathnameWithoutLocale = pathname.replace(/^\/[a-z]{2}/, "");
+  const locale = pathname.split("/")[1] || "uk";
+  const pathnameWithoutLocale = pathname.replace(/^\/[a-z]{2}/, "") || "/";
 
   return (
     <nav className="flex items-center gap-6">
       {links.map((link) => (
         <Link
           key={link.href}
-          href={link.href}
-          className={`text-sm transition-colors hover:text-white ${
-            pathnameWithoutLocale === link.href
+          href={`/${locale}${link.href}`}
+          className={`text-sm transition-colors hover:text-white cursor-pointer ${
+            pathnameWithoutLocale === (link.href || "/")
               ? "text-white font-semibold"
               : "text-gray-300"
           }`}

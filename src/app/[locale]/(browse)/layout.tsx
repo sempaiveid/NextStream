@@ -1,7 +1,18 @@
+import { SessionProvider } from "next-auth/react";
+
+import { Navbar } from "@/widgets/navbar";
+
 export default function BrowseLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="min-h-screen bg-bg-base">{children}</div>;
+  return (
+    <SessionProvider>
+      <div className="min-h-screen bg-bg-base">
+        <Navbar />
+        {children}
+      </div>
+    </SessionProvider>
+  );
 }

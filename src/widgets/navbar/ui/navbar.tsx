@@ -1,6 +1,7 @@
 "use client";
 import { Bell, Search } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -18,20 +19,20 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   const { data: session } = useSession();
+  const pathname = usePathname();
+  const locale = pathname.split("/")[1] || "uk";
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 transition-all duration-300 ${
         isScrolled
           ? "bg-bg-base/95 backdrop-blur-md border-b border-border-subtle"
-          : "bg-gradient-to-b from-black/80 to-transparent"
+          : "bg-linear-to-b from-black/80 to-transparent"
       }`}
     >
       <div className="flex items-center gap-10">
-        <Link href="/">
-          <span className="text-brand font-bold text-xl tracking-widest">
-            NEXTSTREAM
-          </span>
+        <Link href={`/${locale}`} className="text-brand font-bold text-xl tracking-widest cursor-pointer">
+          NEXTSTREAM
         </Link>
 
         <NavLinks />

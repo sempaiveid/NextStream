@@ -3,6 +3,8 @@ import { ChevronDown, Play, Plus, ThumbsUp } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import { BLUR_PLACEHOLDER } from "@/shared/lib/blur-placeholder";
+
 import { TMDB_IMAGE_URL } from "../api/tmdb";
 import { movieSlug } from "../lib/movie-slug";
 import type { Movie } from "../model/types";
@@ -32,6 +34,9 @@ export function MovieCardHover({ movie, backdropUrl, year, locale, visible }: Mo
           alt={movie.title}
           fill
           draggable={false}
+          placeholder="blur"
+          blurDataURL={BLUR_PLACEHOLDER}
+          sizes="320px"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-linear-to-t from-zinc-900 to-transparent" />

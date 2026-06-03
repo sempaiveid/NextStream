@@ -70,6 +70,12 @@ export function RegisterForm() {
         </FieldGroup>
 
 
+        {form.formState.errors.root && (
+          <p className="rounded-md bg-red-500/10 border border-red-500/30 px-4 py-3 text-sm text-red-400">
+            {form.formState.errors.root.message}
+          </p>
+        )}
+
         <Button
           type="submit"
           size="lg"
