@@ -11,8 +11,9 @@ const authRoutes = [
   "/register",
   "/forgot-password",
   "/reset-password",
+  "/verify-email",
 ];
-const publicRoutes = ["/"];
+const publicRoutes = ["/", "/movie"];
 
 export default auth((req: NextRequest & { auth: Session | null }) => {
   const { pathname } = req.nextUrl;
