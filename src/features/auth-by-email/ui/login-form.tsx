@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -15,13 +16,15 @@ import { Button, FieldGroup, FormInput, Spinner } from "@/shared/ui";
 
 export function LoginForm() {
   const [isOAuthPending, setIsOAuthPending] = useState(false);
+  const searchParams = useSearchParams();
+  const checkEmail = searchParams.get("check-email");
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
     mode: "onTouched",
   });
-  const { onLogin, isPending,  } = useLogin(form);
+  const { onLogin, isPending } = useLogin(form);
 
   function handleLogin(data: LoginFormValues) {
     onLogin(data);
@@ -29,6 +32,12 @@ export function LoginForm() {
 
   return (
     <div className="w-full max-w-md bg-black/75 backdrop-blur-sm rounded-lg p-8">
+      {checkEmail && (
+        <div className="mb-6 rounded-md bg-green-500/10 border border-green-500/30 px-4 py-3 text-sm text-green-400">
+          Check your email to verify your account before signing in.
+        </div>
+      )}
+
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-white">Welcome Back</h1>
         <p className="text-gray-400 mt-1">Sign in to your NextStream account</p>

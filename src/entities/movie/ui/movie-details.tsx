@@ -2,14 +2,17 @@ import { Play, Plus, ThumbsUp } from "lucide-react";
 import Image from "next/image";
 import { Suspense } from "react";
 
+import { BLUR_PLACEHOLDER } from "@/shared/lib/blur-placeholder";
+
 import { movieApi, TMDB_IMAGE_URL } from "../api/tmdb";
 
-import { VideoPlayer } from "@/features/player";
 
 import { MovieCast } from "./movie-cast";
 import { MovieInfo } from "./movie-info";
 import { MovieRow } from "./movie-row";
 import { MovieRowSkeleton } from "./movie-row-skeleton";
+
+import { VideoPlayer } from "@/features/player";
 
 interface MovieDetailsPageProps {
   id: number;
@@ -51,7 +54,7 @@ export async function MovieDetailsPage({ id }: MovieDetailsPageProps) {
     <div className="min-h-screen bg-bg-base text-white">
       <div className="relative w-full h-[60vh]">
         {backdropUrl && (
-          <Image src={backdropUrl} alt={movie.title} fill className="object-cover object-top" priority />
+          <Image src={backdropUrl} alt={movie.title} fill placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} className="object-cover object-top" priority />
         )}
         <div className="absolute inset-0 bg-linear-to-t from-bg-base via-bg-base/30 to-transparent" />
         <div className="absolute inset-0 bg-linear-to-r from-bg-base/80 via-transparent to-transparent" />
@@ -61,7 +64,7 @@ export async function MovieDetailsPage({ id }: MovieDetailsPageProps) {
         <div className="flex gap-8">
           {posterUrl && (
             <div className="shrink-0 w-40 rounded-md overflow-hidden shadow-2xl hidden md:block">
-              <Image src={posterUrl} alt={movie.title} width={160} height={240} className="object-cover w-full" />
+              <Image src={posterUrl} alt={movie.title} width={160} height={240} placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} className="object-cover w-full" />
             </div>
           )}
 

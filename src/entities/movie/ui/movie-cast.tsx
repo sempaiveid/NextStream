@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { BLUR_PLACEHOLDER } from "@/shared/lib/blur-placeholder";
+
 import { TMDB_IMAGE_URL } from "../api/tmdb";
 import type { CastMember } from "../model/types";
 
@@ -22,6 +24,9 @@ export function MovieCast({ cast }: MovieCastProps) {
                   src={`${TMDB_IMAGE_URL}/w185${member.profile_path}`}
                   alt={member.name}
                   fill
+                  sizes="(max-width: 768px) 20vw, 10vw"
+                  placeholder="blur"
+                  blurDataURL={BLUR_PLACEHOLDER}
                   className="object-cover"
                 />
               ) : (

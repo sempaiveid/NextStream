@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 
 import { QueryProvider, cn } from "@/shared/lib";
+import { NavigationProgress } from "@/shared/ui/navigation-progress";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       className={cn("font-sans", inter.variable)}
     >
       <body className="font-sans antialiased">
+        <NavigationProgress />
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

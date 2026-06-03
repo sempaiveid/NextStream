@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
+
+import { BLUR_PLACEHOLDER } from "@/shared/lib/blur-placeholder";
 
 import { TMDB_IMAGE_URL } from "../api/tmdb";
 import { movieSlug } from "../lib/movie-slug";
@@ -12,13 +13,12 @@ import { MovieCardHover } from "./movie-card-hover";
 
 interface MovieCardProps {
   movie: Movie;
+  locale: string;
 }
 
-export function MovieCard({ movie }: MovieCardProps) {
+export function MovieCard({ movie, locale }: MovieCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pathname = usePathname();
-  const locale = pathname.split("/")[1] || "uk";
 
   const posterUrl = movie.poster_path
     ? `${TMDB_IMAGE_URL}/w300${movie.poster_path}`
@@ -52,6 +52,8 @@ export function MovieCard({ movie }: MovieCardProps) {
           alt={movie.title}
           fill
           draggable={false}
+          placeholder="blur"
+          blurDataURL={BLUR_PLACEHOLDER}
           className="object-cover"
           sizes="(max-width: 768px) 128px, 160px"
         />
