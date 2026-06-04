@@ -107,7 +107,6 @@ export function VideoPlayer({ source, title, autoPlay = false, className = "" }:
         }}
         className="absolute inset-0 w-full h-full"
         iframeClassName="w-full h-full pointer-events-none"
-        allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
         onReady={(e) => {
           ytPlayerRef.current = e.target;
           const qualities = e.target.getAvailableQualityLevels?.() ?? [];
