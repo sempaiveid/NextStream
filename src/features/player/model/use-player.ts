@@ -131,19 +131,50 @@ export function usePlayer(containerRef: React.RefObject<HTMLDivElement | null>) 
   }, [set]);
 
   const toggleFullscreen = useCallback(() => {
-    const el = containerRef.current;
+    const el = containerRef.current as HTMLDivElement & {
+      webkitRequestFullscreen?: () => Promise<void>;
+      mozRequestFullScreen?: () => Promise<void>;
+    };
     if (!el) return;
-    if (!document.fullscreenElement) {
-      el.requestFullscreen();
+
+    const fsEl = document as Document & {
+      webkitFullscreenElement?: Element;
+      mozFullScreenElement?: Element;
+      webkitExitFullscreen?: () => Promise<void>;
+      mozCancelFullScreen?: () => Promise<void>;
+    };
+
+    const isFs = fsEl.fullscreenElement || fsEl.webkitFullscreenElement || fsEl.mozFullScreenElement;
+
+    if (!isFs) {
+      (el.requestFullscreen?.() ??
+       el.webkitRequestFullscreen?.() ??
+       el.mozRequestFullScreen?.())
+        ?.catch(() => {});
     } else {
-      document.exitFullscreen();
+      (fsEl.exitFullscreen?.() ??
+       fsEl.webkitExitFullscreen?.() ??
+       fsEl.mozCancelFullScreen?.())
+        ?.catch(() => {});
     }
   }, [containerRef]);
 
   useEffect(() => {
-    const onFsChange = () => set({ fullscreen: !!document.fullscreenElement });
+    const onFsChange = () => {
+      const fsEl = document as Document & {
+        webkitFullscreenElement?: Element;
+        mozFullScreenElement?: Element;
+      };
+      set({ fullscreen: !!(fsEl.fullscreenElement || fsEl.webkitFullscreenElement || fsEl.mozFullScreenElement) });
+    };
     document.addEventListener("fullscreenchange", onFsChange);
-    return () => document.removeEventListener("fullscreenchange", onFsChange);
+    document.addEventListener("webkitfullscreenchange", onFsChange);
+    document.addEventListener("mozfullscreenchange", onFsChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFsChange);
+      document.removeEventListener("webkitfullscreenchange", onFsChange);
+      document.removeEventListener("mozfullscreenchange", onFsChange);
+    };
   }, [set]);
 
   useEffect(() => {

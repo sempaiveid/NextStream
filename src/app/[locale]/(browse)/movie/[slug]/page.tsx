@@ -11,12 +11,13 @@ function parseId(slug: string): number {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const movie = await movieApi.getById(parseId(slug));
-  return {
-    title: movie.title,
-    description: movie.overview,
-  };
+  try {
+    const { slug } = await params;
+    const movie = await movieApi.getById(parseId(slug));
+    return { title: movie.title, description: movie.overview };
+  } catch {
+    return { title: "Movie" };
+  }
 }
 
 export default async function MoviePage({ params }: PageProps) {
