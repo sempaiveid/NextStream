@@ -102,6 +102,7 @@ export function VideoPlayer({ source, title, autoPlay = false, className = "" }:
             rel: 0,
             iv_load_policy: 3,
             disablekb: 1,
+            playsinline: 1,
           },
         }}
         className="absolute inset-0 w-full h-full"
