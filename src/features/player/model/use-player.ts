@@ -60,8 +60,10 @@ export function usePlayer(containerRef: React.RefObject<HTMLDivElement | null>) 
 
   const scheduleHide = useCallback(() => {
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-    hideTimerRef.current = setTimeout(() => set({ showControls: false }), 3000);
-  }, [set]);
+    hideTimerRef.current = setTimeout(() => {
+      setState((prev) => prev.playing ? { ...prev, showControls: false } : prev);
+    }, 3000);
+  }, []);
 
   const onActivity = useCallback(() => {
     set({ showControls: true });
